@@ -1,4 +1,4 @@
-from Services.Advisor.advisor import Advisor
+from Advisor.advisor import Advisor
 from config import Config
 from huggingface_hub import InferenceClient
 from transformers import AutoTokenizer

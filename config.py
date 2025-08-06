@@ -26,3 +26,11 @@ class Config:
         import os
         load_dotenv(override=True)
         return os.getenv('PHI_MODEL_URL')
+
+    @staticmethod
+    def advisors_config():
+        return [
+            {"type": "openai", "enabled": True},
+            {"type": "anthropic", "enabled": True},
+            {"type": "microsoft", "enabled": False}
+        ]

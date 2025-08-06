@@ -1,4 +1,4 @@
-from Services.Advisor.advisor import Advisor
+from Advisor.advisor import Advisor
 from openai import OpenAI
 from config import Config
 

@@ -1,6 +1,10 @@
 import yfinance as yf
+from typing import Optional, List
+from Models.company_data import CompanyData
 import pandas as pd
-from datetime import datetime, timedelta
+
+class DataRetrievalException(Exception):
+    pass
 
 class StockCompaniesInformationManager:
     IBEX35_COMPANIES = {
@@ -41,22 +45,32 @@ class StockCompaniesInformationManager:
     }
 
     @staticmethod
-    def retrieve_company_list():
+    def retrieve_company_list() -> List[str]:
         return list(StockCompaniesInformationManager.IBEX35_COMPANIES)
 
-    def get_stock_data(company_name, period="1y"):
+    @staticmethod
+    def retrieve_company_data(company_name: str, period: str = "1y") -> CompanyData:
         try:
             if company_name not in StockCompaniesInformationManager.IBEX35_COMPANIES:
-                return None, None, "Empresa no encontrada en la lista de IBEX35."
+                raise DataRetrievalException(f"Empresa '{company_name}' no encontrada en IBEX35")
 
-            company = StockCompaniesInformationManager.IBEX35_COMPANIES[company_name]
-            stock = yf.Ticker(company)
-
+            ticker_symbol = StockCompaniesInformationManager.IBEX35_COMPANIES[company_name]
+            stock = yf.Ticker(ticker_symbol)
             historical_data = stock.history(period=period)
 
-            data_info = stock.info
+            if historical_data.empty:
+                raise DataRetrievalException(f"No se pudieron obtener datos históricos para {company_name}")
 
-            return historical_data, data_info, stock
+            return CompanyData(
+                name=company_name,
+                symbol=ticker_symbol,
+                historical_prices=historical_data['Close'],
+                period=period
+            )
 
+
+        except DataRetrievalException:
+
+            raise
         except Exception as e:
-            return None, None, f"Error obteniendo datos: {str(e)}"
+            raise DataRetrievalException(f"Error obteniendo datos para {company_name}: {str(e)}")

@@ -1,7 +1,7 @@
 import gradio as gr
 
-from Services.Stock.stock_companies_information_manager import StockCompaniesInformationManager
-from Services.Interface.gradio_wrapper import GradioWrapper
+from Stock.stock_companies_information_manager import StockCompaniesInformationManager
+from Interface.gradio_wrapper import GradioWrapper
 
 gradio_wrapper = GradioWrapper()
 

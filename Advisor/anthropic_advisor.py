@@ -1,4 +1,4 @@
-from Services.Advisor.advisor import Advisor
+from Advisor.advisor import Advisor
 import anthropic
 from config import Config
 

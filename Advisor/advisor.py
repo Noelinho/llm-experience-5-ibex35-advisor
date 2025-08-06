@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 import pandas as pd
+from Models.company_data import CompanyData
 
 class Advisor(ABC):
-
-
     @abstractmethod
     def generate_advice(self, company_data):
         pass
@@ -18,25 +17,9 @@ class Advisor(ABC):
         
         """
 
-    def generate_user_prompt(self, company_data):
-        return f"Analiza los siguientes datos de la empresa y proporciona un consejo de inversión. Los dstos que vas a recibir es la cotización al cierre del día.:\n\n{self.clean_company_data(company_data)}"
+    def generate_user_prompt(self, company_data: CompanyData):
+        return f"Analiza los siguientes datos de la empresa y proporciona un consejo de inversión. Los dstos que vas a recibir es la cotización al cierre del día.:\n\n{company_data.retrieve_historical_prices()}\n\n" \
 
     @abstractmethod
     def generate_message(self, system_prompt, user_prompt):
         pass
-
-    def clean_company_data(self, company_data):
-        if company_data.empty:
-            raise ValueError("La Series de pandas está vacía")
-
-        data = []
-        for date, price in company_data.items():
-            data.append({
-                'date': date.strftime('%Y-%m-%d'),
-                'price': round(float(price), 3)
-            })
-
-        df = pd.DataFrame(data)
-        df['date'] = pd.to_datetime(df['date'])
-        return df.sort_values('date')
-
