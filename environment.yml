@@ -1,0 +1,21 @@
+name: jtcsoft-ibex-35-advisor
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - openai
+  - anthropic
+  - markdown
+  - bs4
+  - numpy>=1.24.0,<2.0.0
+  - pandas>=2.0.0,<2.3.0
+  - pip:
+      - gradio
+      - yfinance>=0.2.30
+      - pandas
+      - python-dotenv
+      - matplotlib
+      - tokenizers>=0.13.0
+      - transformers>=4.30.0
+      - torch
